@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE AppModule SYSTEM "jbo_03_01.dtd">
+<!---->
+<AppModule
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="BTNSAppModule"
+  Version="12.2.1.16.48"
+  InheritPersonalization="merge"
+  ClearCacheOnRollback="true">
+  <ViewUsage
+    Name="RegionsView"
+    ViewObjectName="de.hahn.blog.treenodeselect.model.adfbc.views.RegionsView"/>
+  <ViewUsage
+    Name="CountriesOfRegionsView"
+    ViewObjectName="de.hahn.blog.treenodeselect.model.adfbc.views.CountriesView"/>
+  <ViewUsage
+    Name="LocationsOfCountriesView"
+    ViewObjectName="de.hahn.blog.treenodeselect.model.adfbc.views.LocationsView"/>
+  <ViewLinkUsage
+    Name="CountrRegFkLink1"
+    ViewLinkObjectName="de.hahn.blog.treenodeselect.model.adfbc.views.viewlinks.CountrRegFkLink"
+    SrcViewUsageName="de.hahn.blog.treenodeselect.model.adfbc.services.BTNSAppModule.RegionsView"
+    DstViewUsageName="de.hahn.blog.treenodeselect.model.adfbc.services.BTNSAppModule.CountriesOfRegionsView"
+    Reversed="false"/>
+  <ViewLinkUsage
+    Name="LocCIdFkLink2"
+    ViewLinkObjectName="de.hahn.blog.treenodeselect.model.adfbc.views.viewlinks.LocCIdFkLink"
+    SrcViewUsageName="de.hahn.blog.treenodeselect.model.adfbc.services.BTNSAppModule.CountriesOfRegionsView"
+    DstViewUsageName="de.hahn.blog.treenodeselect.model.adfbc.services.BTNSAppModule.LocationsOfCountriesView"
+    Reversed="false"/>
+</AppModule>
