@@ -75,6 +75,7 @@
    <hash n="oracle.ide.model.TechnologyScopeConfiguration">
       <list n="technologyScope">
          <string v="ADFbc"/>
+         <string v="Ant"/>
          <string v="Java"/>
          <string v="XML"/>
       </list>
@@ -86,6 +87,14 @@
    <value n="oracle.jbo.SavedPreferences" v="true"/>
    <value n="oracle.jbo.VLPackage" v="views.viewlinks"/>
    <value n="oracle.jbo.VOPackage" v="views"/>
+   <hash n="oracle.jdeveloper.ant.AntRunConfiguration">
+      <list n="propertyNames">
+         <string v="env.WORKSPACE"/>
+      </list>
+      <list n="propertyValues">
+         <string v="${workspace.dir}"/>
+      </list>
+   </hash>
    <hash n="oracle.jdeveloper.compiler.OjcConfiguration">
       <list n="copyRes">
          <string v=".GIF"/>
