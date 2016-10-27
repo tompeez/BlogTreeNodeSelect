@@ -30,6 +30,7 @@
    <list n="listOfChildren">
       <hash><url n="URL" path="BTNSModel/BTNSModel.jpr"/></hash>
       <hash><url n="URL" path="BTNSViewController/BTNSViewController.jpr"/></hash>
+      <hash><url n="URL" path="BuildBTNS/BuildBTNS.jpr"/></hash>
    </list>
    <hash n="oracle.jdeveloper.deploy.dt.DeploymentProfiles">
       <hash n="profileDefinitions">

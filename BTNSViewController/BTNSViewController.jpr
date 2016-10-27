@@ -92,6 +92,14 @@
          <string v="XML"/>
       </list>
    </hash>
+   <hash n="oracle.jdeveloper.ant.AntRunConfiguration">
+      <list n="propertyNames">
+         <string v="env.WORKSPACE"/>
+      </list>
+      <list n="propertyValues">
+         <string v="${workspace.dir}"/>
+      </list>
+   </hash>
    <hash n="oracle.jdeveloper.compiler.OjcConfiguration">
       <value n="webIANAEncoding" v="UTF-8"/>
    </hash>
