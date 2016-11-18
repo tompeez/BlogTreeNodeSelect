@@ -19,7 +19,7 @@
     </ora:ojdeploy>
   </target>
   <target name="info">
-    <echo level="info">---------------------------------------------------</echo>
+    <echo level="info">----------------START------------------------------</echo>
     <echo level="info">---------------------------------------------------</echo>
     <echo level="info">appbuild: oracle.home=${env.ORACLE_HOME_SOA_12_2_1}</echo>
     <echo level="info">${env.ORACLE_HOME_SOA_12_2_1}</echo>
@@ -40,6 +40,6 @@
     <echo level="info">appbuild: oracle.jdeveloper.deploy.outputfile=${oracle.jdeveloper.deploy.outputfile}</echo>
     <echo level="info">appbuild: output.dir=${output.dir}</echo>
     <echo level="info">---------------------------------------------------</echo>
-    <echo level="info">---------------------------------------------------</echo>
+    <echo level="info">---------------END---------------------------------</echo>
   </target>
 </project>
