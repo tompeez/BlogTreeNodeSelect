@@ -102,7 +102,7 @@
    <hash n="oracle.jdeveloper.ant.AntRunConfiguration">
       <list n="propertyNames">
          <string v="env.WORKSPACE"/>
-         <string v="env.EXEC_SUFFIX"/>
+         <string v="env.OJDEPLOY"/>
       </list>
       <list n="propertyValues">
          <string v="${workspace.dir}"/>
