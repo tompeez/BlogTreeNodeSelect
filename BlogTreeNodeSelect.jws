@@ -3,6 +3,9 @@
    <hash n="adrs-workspace-properties">
       <value n="adrs-instance-binding" v="DefaultServer"/>
    </hash>
+   <hash n="adrs-workspace-weblogic-properties">
+      <value n="hot-class-reload" v="fast-swap"/>
+   </hash>
    <value n="application-package-prefix" v="de.hahn.blog.treenodeselect"/>
    <value n="appTemplateId" v="adfWebappApplicationTemplate"/>
    <hash n="component-versions">
@@ -92,5 +95,15 @@
       <list n="profileList">
          <string v="BlogTreeNodeSelect_Project1_BlogTreeNodeSelect"/>
       </list>
+   </hash>
+   <hash n="oracle.jdeveloper.model.PathsConfiguration">
+      <hash n="ApplicationSrcContentSet">
+         <list n="pattern-filters">
+            <string v="+**"/>
+         </list>
+         <list n="url-path">
+            <url path="src/"/>
+         </list>
+      </hash>
    </hash>
 </jws:workspace>
