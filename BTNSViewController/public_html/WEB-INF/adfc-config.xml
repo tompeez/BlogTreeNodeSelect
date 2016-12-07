@@ -6,6 +6,6 @@
   <managed-bean id="__1">
     <managed-bean-name>TreeSelectionBean</managed-bean-name>
     <managed-bean-class>de.hahn.blog.treenodeselect.view.beans.TreeSelectionBean</managed-bean-class>
-    <managed-bean-scope>view</managed-bean-scope>
+    <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
 </adfc-config>

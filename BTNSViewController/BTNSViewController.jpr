@@ -186,7 +186,7 @@
    </hash>
    <hash n="oracle.jdeveloper.model.J2eeSettings">
       <value n="j2eeWebAppName" v="BlogTreeNodeSelect-BTNSViewController-webapp"/>
-      <value n="j2eeWebContextRoot" v="BlogTreeNodeSelect-BTNSViewController-context-root"/>
+      <value n="j2eeWebContextRoot" v="blogteenodeselect"/>
    </hash>
    <hash n="oracle.jdeveloper.model.PathsConfiguration">
       <hash n="javaContentSet">

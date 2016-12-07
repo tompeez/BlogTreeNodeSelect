@@ -2,7 +2,6 @@ package de.hahn.blog.treenodeselect.view.beans;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 
 import javax.faces.event.ActionEvent;
 
@@ -27,6 +26,7 @@ import org.apache.myfaces.trinidad.util.ComponentReference;
 public class TreeSelectionBean {
     private static ADFLogger _logger = ADFLogger.createADFLogger(TreeSelectionBean.class);
     private ComponentReference _tree;
+    private String nodeOnly = "true";
 
     public TreeSelectionBean() {
     }
@@ -36,10 +36,29 @@ public class TreeSelectionBean {
         // get the binding container
         BindingContainer bindings = BindingContext.getCurrent().getCurrentBindingsEntry();
         // get an ADF attributevalue from the ADF page definitions
-        AttributeBinding attr = (AttributeBinding) bindings.getControlBinding("myLocation1");
-        Integer node = (Integer) attr.getInputValue();
+        AttributeBinding attr = (AttributeBinding) bindings.getControlBinding("mySearchString1");
+        String node = (String) attr.getInputValue();
 
-        _logger.info("Information: select node " + node);
+        // nothing to search!
+        // clear selected nodes
+        if (node == null || node.isEmpty()){
+            RichTree tree = getTree();
+            RowKeySet rks = new RowKeySetImpl();
+            tree.setDisclosedRowKeys(rks);
+            //refresh the tree after the search
+            AdfFacesContext.getCurrentInstance().addPartialTarget(getTree());
+
+            return;
+        }
+        
+        // get an ADF attributevalue from the ADF page definitions
+        AttributeBinding attrNodeOnly = (AttributeBinding) bindings.getControlBinding("myNodeOnly1");
+        String strNodeOnly = (String) attrNodeOnly.getInputValue();
+        // if not initializued set it to false!
+        if (strNodeOnly == null) {
+            strNodeOnly = "false";
+        }
+        _logger.info("Information: search node only: " + strNodeOnly);
 
         //Get the JUCtrlHierbinding reference from the PageDef
         // For JDev 12c use the next two lines to get the treebinding
@@ -62,13 +81,13 @@ public class TreeSelectionBean {
             root = treeBinding.findNodeByKeyPath(topNode);
         }
         RichTree tree = getTree();
-        RowKeySet rks = searchTreeNode(root, node.toString());
+        RowKeySet rks = searchTreeNode(root, node.toString(), strNodeOnly);
+        tree.setSelectedRowKeys(rks);
         //define the row key set that determines the nodes to disclose.
         RowKeySet disclosedRowKeySet = buildDiscloseRowKeySet(treeBinding, rks);
-        tree.setSelectedRowKeys(rks);
         tree.setDisclosedRowKeys(disclosedRowKeySet);
         //refresh the tree after the search
-        AdfFacesContext.getCurrentInstance().addPartialTarget(getTree());
+        AdfFacesContext.getCurrentInstance().addPartialTarget(tree);
     }
 
     /**
@@ -77,15 +96,12 @@ public class TreeSelectionBean {
      * Attribute names are ignored if they don't exist in the search node.
      * The method performs a recursiv search and returns a RowKeySet with
      * the row keys of all nodes that contain the search string
-     * @param node The JUCtrlHierNodeBinding instance to search
-     * @param searchAttributes An array of attribute names to search in
-     * @param searchType defines where the search is started within the
-     * text. Valid values are
-     * START, CONTAIN, END. If NULL the "CONTAIN" is set as the default
+     * @param node The JUCtrlHierNodeBinding instance to search The start node to search
      * @param searchString The search condition
-     * @return RowKeySet row keys
+     * @param nodeOnly if true searches the visible node data only
+     * @return RowKeySet row keys which contain hte search string
      */
-    private RowKeySet searchTreeNode(JUCtrlHierNodeBinding node, String searchString) {
+    private RowKeySet searchTreeNode(JUCtrlHierNodeBinding node, String searchString, String nodeOnly) {
         RowKeySetImpl rowKeys = new RowKeySetImpl();
         //Sanity checks
         if (node == null) {
@@ -98,37 +114,50 @@ public class TreeSelectionBean {
             return rowKeys;
         }
 
-        Row nodeRow = node.getRow();
-        if (nodeRow != null) {
-            String compareString = "";
-            try {
-                Object attribute = nodeRow.getAttribute("LocationId");
-                if (attribute instanceof String) {
-                    compareString = (String) attribute;
-                } else {
-                    //try the toString method as a simple fallback
-                    compareString = attribute.toString();
-                }
-                //not all nodes have all attributes. In this case an exception
-                //is thrown that we don't need to handle as it is expected
-            } catch (oracle.jbo.JboException attributeNotFound) {
-                //node does not have attribute. Exclude from search
-                _logger.log(Level.FINEST, "Attribute not found in node");
+        String compareString = "";
+
+
+        if ("true".equals(nodeOnly)) {
+            ///////////////////////////////////////////////////////////////////////
+            // To search only the visible data in the tree node
+            Object[] aValues = node.getAttributeValues();
+            StringBuilder sb = new StringBuilder();
+            for (Object aValue : aValues) {
+                sb.append(aValue).append(" ");
             }
+            _logger.info("node value:" + sb.toString());
+            compareString = sb.toString();
 
             //compare strings case insensitive.
             if (compareString.toUpperCase().indexOf(searchString.toUpperCase()) > -1) {
                 //get row key
                 rowKeys.add(node.getKeyPath());
             }
-        }
+        } else {
+            //////////////////////////////////////////////////////////////////////
+            // to search the whole row used to build the tree node
+            Row nodeRow = node.getRow();
+            if (nodeRow != null) {
+                Object[] attributeValues = nodeRow.getAttributeValues();
+                for (Object obj : attributeValues) {
+                    if (obj != null) {
+                        compareString = obj.toString();
+                    }
 
+                    //compare strings case insensitive.
+                    if (compareString.toUpperCase().indexOf(searchString.toUpperCase()) > -1) {
+                        //get row key
+                        rowKeys.add(node.getKeyPath());
+                    }
+                }
+            }
+        }
         List<JUCtrlHierNodeBinding> children = node.getChildren();
         if (children != null) {
             for (JUCtrlHierNodeBinding _node : children) {
                 //Each child search returns a row key set that must be added to the
                 //row key set returned by the overall search
-                RowKeySet rks = searchTreeNode(_node, searchString);
+                RowKeySet rks = searchTreeNode(_node, searchString, nodeOnly);
                 if (rks != null && rks.size() > 0) {
                     rowKeys.addAll(rks);
                 }
@@ -154,9 +183,7 @@ public class TreeSelectionBean {
         while (iter.hasNext()) {
             List keyPath = (List) iter.next();
             JUCtrlHierNodeBinding node = treeBinding.findNodeByKeyPath(keyPath);
-            if (node != null && node.getParent() != null && !node.getParent()
-                                                                 .getKeyPath()
-                                                                 .isEmpty()) {
+            if (node != null && node.getParent() != null && !node.getParent().getKeyPath().isEmpty()) {
                 //store the parent path
                 discloseRowKeySet.add(node.getParent().getKeyPath());
                 //call method recursively until no parents are found

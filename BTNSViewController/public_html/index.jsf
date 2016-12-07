@@ -13,12 +13,14 @@
                 </af:gridRow>
                 <af:gridRow height="100%" id="gr1">
                     <af:gridCell width="100%" halign="stretch" valign="stretch" id="gc1">
-                        <af:panelSplitter id="ps1">
+                        <af:panelSplitter id="ps1" splitterPosition="250">
                             <f:facet name="first">
                                 <af:panelGroupLayout id="pgl2" layout="vertical">
-                                    <af:inputText label="Location" id="it1" value="#{bindings.myLocation1.inputValue}"/>
+                                    <af:selectBooleanCheckbox text="node only" label="Seach" id="sbc1"
+                                                              value="#{bindings.myNodeOnly1.inputValue}"/>
+                                    <af:inputText label="Search for" id="it1" value="#{bindings.mySearchString1.inputValue}"/>
                                     <af:button text="Select" id="b1"
-                                               actionListener="#{viewScope.TreeSelectionBean.onSelection}"/>
+                                               actionListener="#{TreeSelectionBean.onSelection}"/>
                                 </af:panelGroupLayout>
                             </f:facet>
                             <f:facet name="second">
@@ -28,7 +30,7 @@
                                     <af:tree value="#{bindings.RegionsView.treeModel}" var="node"
                                              selectionListener="#{bindings.RegionsView.treeModel.makeCurrent}"
                                              rowSelection="single" id="t1"
-                                             binding="#{viewScope.TreeSelectionBean.tree}">
+                                             binding="#{TreeSelectionBean.tree}">
                                         <f:facet name="nodeStamp">
                                             <af:outputText value="#{node}" id="ot2"/>
                                         </f:facet>

@@ -4,9 +4,12 @@
   <parameters/>
   <executables>
     <variableIterator id="variables">
-      <variable Name="myLocation" Type="java.lang.Integer"/>
+      <variable Name="mySearchString" Type="java.lang.String"/>
+      <variable Name="myNodeOnly" Type="java.lang.String"/>
     </variableIterator>
     <iterator Binds="RegionsView" RangeSize="25" DataControl="BTNSAppModuleDataControl" id="RegionsViewIterator"/>
+    <iterator id="CountriesOfRegionsViewIterator" Binds="CountriesOfRegionsView" DataControl="BTNSAppModuleDataControl" RangeSize="25"/>
+    <iterator id="LocationsOfCountriesViewIterator" Binds="LocationsOfCountriesView" DataControl="BTNSAppModuleDataControl" RangeSize="25"/>
   </executables>
   <bindings>
     <tree IterBinding="RegionsViewIterator" id="RegionsView">
@@ -19,7 +22,8 @@
           <Item Value="CountriesView"/>
         </Accessors>
       </nodeDefinition>
-      <nodeDefinition DefName="de.hahn.blog.treenodeselect.model.adfbc.views.CountriesView" Name="RegionsView1">
+      <nodeDefinition DefName="de.hahn.blog.treenodeselect.model.adfbc.views.CountriesView" Name="RegionsView1"
+                      TargetIterator="${bindings.CountriesOfRegionsViewIterator}">
         <AttrNames>
           <Item Value="CountryId"/>
           <Item Value="CountryName"/>
@@ -28,7 +32,8 @@
           <Item Value="LocationsView"/>
         </Accessors>
       </nodeDefinition>
-      <nodeDefinition DefName="de.hahn.blog.treenodeselect.model.adfbc.views.LocationsView" Name="RegionsView2">
+      <nodeDefinition DefName="de.hahn.blog.treenodeselect.model.adfbc.views.LocationsView" Name="RegionsView2"
+                      TargetIterator="${bindings.LocationsOfCountriesViewIterator}">
         <AttrNames>
           <Item Value="LocationId"/>
           <Item Value="PostalCode"/>
@@ -36,9 +41,14 @@
         </AttrNames>
       </nodeDefinition>
     </tree>
-    <attributeValues IterBinding="variables" id="myLocation1">
+    <attributeValues IterBinding="variables" id="mySearchString1">
       <AttrNames>
-        <Item Value="myLocation"/>
+        <Item Value="mySearchString"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="variables" id="myNodeOnly1">
+      <AttrNames>
+        <Item Value="myNodeOnly"/>
       </AttrNames>
     </attributeValues>
   </bindings>
